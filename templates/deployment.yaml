@@ -20,10 +20,21 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+      volumes:
+      - name: resolvermap
+        configMap:
+          name: resolvermap
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: resolvermap
+              mountPath: /src/resolvers.js
+              subPath: resolvers.js
+            - name: resolvermap
+              mountPath: /src/schema.js
+              subPath: schema.js
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

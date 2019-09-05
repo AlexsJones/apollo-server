@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: resolvermap
+data:
+  resolvers.js: |
+    const movies = [
+      {
+        title: 'Star wars',
+        releaseDate: '1977'
+      },
+      {
+        title: 'Jurassic Park',
+        releaseDate: '1993'
+      },
+    ];
+
+    const resolvers = {
+      Query: {
+        movies: () => movies,
+      },
+    };
+
+    module.exports = resolvers;
+  schema.js: |
+    const { gql } = require('apollo-server');
+
+    const typeDefs = gql`
+      type Movie {
+        title: String
+        releaseDate: String
+      }
+      type Query {
+        movies: [Movie]
+      }
+    `;
+
+    module.exports = typeDefs;
