@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: apollo
+spec:
+  ports:
+  - port: 4000
+  type: LoadBalancer
+  selector:
+    app: apollo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apollo
+spec:
+  selector:
+    matchLabels:
+      app: apollo
+  template:
+    metadata:
+      labels:
+        app: apollo
+    spec:
+      containers:
+      - name: apollo
+        image: tibbar/apollo-example
+        ports:
+        - containerPort: 4000
